@@ -14,7 +14,17 @@
         <button id="generate-button">Generate String</button>
         <div class="input-section">
             <input type="text" id="sentence-input" placeholder="Enter sentence">
-            <button id="lookup-button">Look up Time</button>
+            <button id="lookup-button">Lookup Time</button>
+            <div>
+                <label><input type="checkbox" id="use-dropdowns"> Use dropdowns</label>
+            </div>
+            <div id="dropdowns-section" class="dropdowns-section" style="display: none;">
+                <select id="noun1-select"></select>
+                <select id="adverb-select"></select>
+                <select id="verb-select"></select>
+                <select id="adjective-select"></select>
+                <select id="noun2-select"></select>
+            </div>
             <div id="timestamp-box" class="timestamp-box"></div>
         </div>
     </div>

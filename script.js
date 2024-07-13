@@ -4,6 +4,14 @@ const sentenceInput = document.getElementById('sentence-input');
 const lookupButton = document.getElementById('lookup-button');
 const timestampBox = document.getElementById('timestamp-box');
 const timeBox = document.getElementById('time-box');
+const useDropdownsCheckbox = document.getElementById('use-dropdowns');
+const dropdownsSection = document.getElementById('dropdowns-section');
+
+const noun1Select = document.getElementById('noun1-select');
+const adverbSelect = document.getElementById('adverb-select');
+const verbSelect = document.getElementById('verb-select');
+const adjectiveSelect = document.getElementById('adjective-select');
+const noun2Select = document.getElementById('noun2-select');
 
 const colors = [
     '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFF5', '#FFC733',
@@ -12,8 +20,8 @@ const colors = [
 
 const nouns = ["cat", "dog", "car", "tree", "house", "bird", "mouse", "cake", "shoe", "cloud"];
 const adverbs = ["quickly", "slowly", "happily", "sadly", "gracefully", "angrily", "eagerly", "lazily", "boldly", "quietly"];
-const verbs = ["jumps", "runs", "flies", "sings", "dances", "drives", "writes", "draws", "talks", "walks"];
-const adjectives = ["red", "blue", "green", "big", "small", "bright", "dark", "shiny", "rough", "smooth"];
+const verbs = ["writes", "draws", "paints", "carries", "builds", "repairs", "reads", "sends", "receives", "offers"];
+const adjectives = ["big", "small", "bright", "dark", "shiny", "rough", "smooth", "soft", "hard", "loud"];
 
 function getWordFromList(list, index) {
     return list[index % list.length];
@@ -51,6 +59,34 @@ function updateStringBox() {
     timeBox.textContent = `Current time: ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
 }
 
+function populateDropdowns() {
+    nouns.forEach(word => {
+        const option = document.createElement('option');
+        option.value = word;
+        option.textContent = word;
+        noun1Select.appendChild(option);
+        noun2Select.appendChild(option.cloneNode(true));
+    });
+    adverbs.forEach(word => {
+        const option = document.createElement('option');
+        option.value = word;
+        option.textContent = word;
+        adverbSelect.appendChild(option);
+    });
+    verbs.forEach(word => {
+        const option = document.createElement('option');
+        option.value = word;
+        option.textContent = word;
+        verbSelect.appendChild(option);
+    });
+    adjectives.forEach(word => {
+        const option = document.createElement('option');
+        option.value = word;
+        option.textContent = word;
+        adjectiveSelect.appendChild(option);
+    });
+}
+
 function getTimestampFromSentence(sentence) {
     const [noun1, adverb, verb, adjective, noun2] = sentence.split(' ');
     const noun1Index = getIndexFromWord(nouns, noun1);
@@ -71,7 +107,18 @@ function getTimestampFromSentence(sentence) {
 }
 
 function lookupTimestamp() {
-    const sentence = sentenceInput.value.trim();
+    let sentence;
+    if (useDropdownsCheckbox.checked) {
+        const noun1 = noun1Select.value;
+        const adverb = adverbSelect.value;
+        const verb = verbSelect.value;
+        const adjective = adjectiveSelect.value;
+        const noun2 = noun2Select.value;
+        sentence = `${noun1} ${adverb} ${verb} ${adjective} ${noun2}`;
+    } else {
+        sentence = sentenceInput.value.trim();
+    }
+
     try {
         const minutes = getTimestampFromSentence(sentence);
         const hours = Math.floor(minutes / 60);
@@ -84,8 +131,16 @@ function lookupTimestamp() {
     }
 }
 
+useDropdownsCheckbox.addEventListener('change', () => {
+    dropdownsSection.style.display = useDropdownsCheckbox.checked ? 'block' : 'none';
+    sentenceInput.style.display = useDropdownsCheckbox.checked ? 'none' : 'block';
+});
+
 generateButton.addEventListener('click', updateStringBox);
 lookupButton.addEventListener('click', lookupTimestamp);
+
+// Populate dropdowns on load
+populateDropdowns();
 
 // Update the string and time every minute
 updateStringBox(); // Initial call to display the string on page load
