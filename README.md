@@ -10,6 +10,10 @@ This project is a web application that generates a unique, human-readable senten
 - **Current Time Display**: Displays the current time and updates every minute.
 - **Responsive Design**: Simple and clean UI that works well on different screen sizes.
 
+## Project Status
+
+**Note:** This application is currently a proof of concept. The mapping function used to generate sentences from timestamps and vice versa may change in future updates. This could affect the reproducibility of results over different versions.
+
 ## Usage
 
 ### Generate Unique String
@@ -42,6 +46,10 @@ To run the project locally, follow these steps:
 
 This project is hosted on GitHub Pages and can be accessed at:
 https://tonypaws.github.io/minute-string-generator/
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any changes or improvements.
 
 ## License
 

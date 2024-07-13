@@ -18,12 +18,17 @@
             <div>
                 <label><input type="checkbox" id="use-dropdowns"> Use dropdowns</label>
             </div>
-            <div id="dropdowns-section" class="dropdowns-section" style="display: none;">
+            <div id="dropdowns-section" class="dropdowns-section">
                 <select id="noun1-select"></select>
                 <select id="adverb-select"></select>
                 <select id="verb-select"></select>
                 <select id="adjective-select"></select>
                 <select id="noun2-select"></select>
+            </div>
+            <div class="time-input-section">
+                <input type="number" id="hour-input" placeholder="Hour (0-23)" min="0" max="23">
+                <input type="number" id="minute-input" placeholder="Minute (0-59)" min="0" max="59">
+                <button id="time-to-sentence-button">Convert Time to Sentence</button>
             </div>
             <div id="timestamp-box" class="timestamp-box"></div>
         </div>

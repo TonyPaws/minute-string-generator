@@ -13,6 +13,10 @@ const verbSelect = document.getElementById('verb-select');
 const adjectiveSelect = document.getElementById('adjective-select');
 const noun2Select = document.getElementById('noun2-select');
 
+const hourInput = document.getElementById('hour-input');
+const minuteInput = document.getElementById('minute-input');
+const timeToSentenceButton = document.getElementById('time-to-sentence-button');
+
 const colors = [
     '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFF5', '#FFC733',
     '#FF8333', '#D433FF', '#33FF83', '#FF5733', '#FF33F5', '#F533FF'
@@ -131,6 +135,23 @@ function lookupTimestamp() {
     }
 }
 
+function convertTimeToSentence() {
+    const hour = parseInt(hourInput.value);
+    const minute = parseInt(minuteInput.value);
+
+    if (isNaN(hour) || isNaN(minute) || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        timestampBox.textContent = "Please enter a valid time.";
+        timestampBox.style.backgroundColor = '#FF5733';
+        return;
+    }
+
+    const minutes = hour * 60 + minute;
+    const uniqueString = generateUniqueString(minutes);
+
+    timestampBox.textContent = `The sentence for ${hour}:${String(minute).padStart(2, '0')} is "${uniqueString}".`;
+    timestampBox.style.backgroundColor = '#333';
+}
+
 useDropdownsCheckbox.addEventListener('change', () => {
     dropdownsSection.style.display = useDropdownsCheckbox.checked ? 'flex' : 'none';
     sentenceInput.style.display = useDropdownsCheckbox.checked ? 'none' : 'block';
@@ -138,6 +159,7 @@ useDropdownsCheckbox.addEventListener('change', () => {
 
 generateButton.addEventListener('click', updateStringBox);
 lookupButton.addEventListener('click', lookupTimestamp);
+timeToSentenceButton.addEventListener('click', convertTimeToSentence);
 
 // Populate dropdowns on load
 populateDropdowns();
