@@ -132,7 +132,7 @@ function lookupTimestamp() {
 }
 
 useDropdownsCheckbox.addEventListener('change', () => {
-    dropdownsSection.style.display = useDropdownsCheckbox.checked ? 'block' : 'none';
+    dropdownsSection.style.display = useDropdownsCheckbox.checked ? 'flex' : 'none';
     sentenceInput.style.display = useDropdownsCheckbox.checked ? 'none' : 'block';
 });
 

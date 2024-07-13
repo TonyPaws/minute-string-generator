@@ -28,6 +28,9 @@ h1 {
 
 .input-section {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 input, select {
@@ -35,7 +38,7 @@ input, select {
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-right: 10px;
+    margin: 5px 0;
 }
 
 button {
@@ -50,4 +53,10 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+#dropdowns-section {
+    display: none;
+    flex-direction: column;
+    align-items: center;
 }
