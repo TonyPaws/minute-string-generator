@@ -3,6 +3,7 @@ const generateButton = document.getElementById('generate-button');
 const sentenceInput = document.getElementById('sentence-input');
 const lookupButton = document.getElementById('lookup-button');
 const timestampBox = document.getElementById('timestamp-box');
+const timeBox = document.getElementById('time-box');
 
 const colors = [
     '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFF5', '#FFC733',
@@ -12,7 +13,7 @@ const colors = [
 const nouns = ["cat", "dog", "car", "tree", "house", "bird", "mouse", "cake", "shoe", "cloud"];
 const adverbs = ["quickly", "slowly", "happily", "sadly", "gracefully", "angrily", "eagerly", "lazily", "boldly", "quietly"];
 const verbs = ["jumps", "runs", "flies", "sings", "dances", "drives", "writes", "draws", "talks", "walks"];
-const adjectives = ["hot", "cold", "sad", "happy", "big", "small", "dark", "bright", "rough", "smooth"];
+const adjectives = ["red", "blue", "green", "big", "small", "bright", "dark", "shiny", "rough", "smooth"];
 
 function getWordFromList(list, index) {
     return list[index % list.length];
@@ -30,8 +31,11 @@ function getTimestampFromSentence(sentence) {
         throw new Error("Invalid sentence structure.");
     }
 
-    // Reverse the calculation to get the minute
-    const minutes = (noun1Index + adverbIndex * nouns.length + verbIndex * nouns.length * adverbs.length + adjectiveIndex * nouns.length * adverbs.length * verbs.length) % (24 * 60);
+    // Recalculate the minute based on the indexes
+    const minutes = noun1Index + 
+                    (adverbIndex * nouns.length) + 
+                    (verbIndex * nouns.length * adverbs.length) + 
+                    (adjectiveIndex * nouns.length * adverbs.length * verbs.length);
     return minutes;
 }
 
@@ -60,6 +64,7 @@ function updateStringBox() {
     const color = assignColor();
     stringBox.textContent = uniqueString;
     stringBox.style.backgroundColor = color;
+    timeBox.textContent = `Current time: ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
 }
 
 function lookupTimestamp() {
@@ -68,7 +73,7 @@ function lookupTimestamp() {
         const minutes = getTimestampFromSentence(sentence);
         const hours = Math.floor(minutes / 60);
         const remainingMinutes = minutes % 60;
-        timestampBox.textContent = `The sentence corresponds to ${hours}:${remainingMinutes}`;
+        timestampBox.textContent = `The sentence corresponds to ${hours}:${String(remainingMinutes).padStart(2, '0')}`;
         timestampBox.style.backgroundColor = '#333';
     } catch (error) {
         timestampBox.textContent = error.message;
@@ -78,4 +83,7 @@ function lookupTimestamp() {
 
 generateButton.addEventListener('click', updateStringBox);
 lookupButton.addEventListener('click', lookupTimestamp);
+
+// Update the string and time every minute
 updateStringBox(); // Initial call to display the string on page load
+setInterval(updateStringBox, 60000); // Update every minute
