@@ -19,24 +19,8 @@ function getWordFromList(list, index) {
     return list[index % list.length];
 }
 
-function getTimestampFromSentence(sentence) {
-    const [noun1, adverb, verb, adjective, noun2] = sentence.split(' ');
-    const noun1Index = nouns.indexOf(noun1);
-    const adverbIndex = adverbs.indexOf(adverb);
-    const verbIndex = verbs.indexOf(verb);
-    const adjectiveIndex = adjectives.indexOf(adjective);
-    const noun2Index = nouns.indexOf(noun2);
-
-    if (noun1Index === -1 || adverbIndex === -1 || verbIndex === -1 || adjectiveIndex === -1 || noun2Index === -1) {
-        throw new Error("Invalid sentence structure.");
-    }
-
-    // Recalculate the minute based on the indexes
-    const minutes = noun1Index + 
-                    (adverbIndex * nouns.length) + 
-                    (verbIndex * nouns.length * adverbs.length) + 
-                    (adjectiveIndex * nouns.length * adverbs.length * verbs.length);
-    return minutes;
+function getIndexFromWord(list, word) {
+    return list.indexOf(word);
 }
 
 function generateUniqueString(minutes) {
@@ -65,6 +49,25 @@ function updateStringBox() {
     stringBox.textContent = uniqueString;
     stringBox.style.backgroundColor = color;
     timeBox.textContent = `Current time: ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+}
+
+function getTimestampFromSentence(sentence) {
+    const [noun1, adverb, verb, adjective, noun2] = sentence.split(' ');
+    const noun1Index = getIndexFromWord(nouns, noun1);
+    const adverbIndex = getIndexFromWord(adverbs, adverb);
+    const verbIndex = getIndexFromWord(verbs, verb);
+    const adjectiveIndex = getIndexFromWord(adjectives, adjective);
+    const noun2Index = getIndexFromWord(nouns, noun2) - 1;
+
+    if (noun1Index === -1 || adverbIndex === -1 || verbIndex === -1 || adjectiveIndex === -1 || noun2Index === -1) {
+        throw new Error("Invalid sentence structure.");
+    }
+
+    const minutes = noun1Index + 
+                    (adverbIndex * nouns.length) + 
+                    (verbIndex * nouns.length * adverbs.length) + 
+                    (adjectiveIndex * nouns.length * adverbs.length * verbs.length);
+    return minutes;
 }
 
 function lookupTimestamp() {
