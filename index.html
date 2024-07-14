@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minute String Generator</title>
+    <title>Unique Minute String Generator</title>
     <link rel="stylesheet" href="styles.css">
     <script src="nouns.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Unique Minute String Generator</h1>
+        <h1 id="page-title">Unique Minute String Generator</h1>
+        <div>
+            <label><input type="checkbox" id="one-word-mode"> One-Word Mode</label>
+        </div>
         <div id="string-box" class="string-box"></div>
         <div id="time-box" class="time-box"></div>
         <button id="generate-button">Generate String</button>
@@ -30,9 +33,6 @@
                 <input type="number" id="hour-input" placeholder="Hour (0-23)" min="0" max="23">
                 <input type="number" id="minute-input" placeholder="Minute (0-59)" min="0" max="59">
                 <button id="time-to-sentence-button">Convert Time to Sentence</button>
-            </div>
-            <div>
-                <label><input type="checkbox" id="one-word-mode"> One-Word Mode</label>
             </div>
             <div id="timestamp-box" class="timestamp-box"></div>
         </div>

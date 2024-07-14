@@ -7,6 +7,7 @@ const timeBox = document.getElementById('time-box');
 const useDropdownsCheckbox = document.getElementById('use-dropdowns');
 const dropdownsSection = document.getElementById('dropdowns-section');
 const oneWordModeCheckbox = document.getElementById('one-word-mode');
+const pageTitle = document.getElementById('page-title');
 
 const noun1Select = document.getElementById('noun1-select');
 const adverbSelect = document.getElementById('adverb-select');
@@ -142,7 +143,7 @@ function lookupTimestamp() {
 
     try {
         const { hours, minutes } = getTimestampFromSentence(sentence);
-        timestampBox.textContent = `The sentence corresponds to ${hours}:${String(minutes).padStart(2, '0')}`;
+        timestampBox.textContent = `The ${oneWordModeCheckbox.checked ? 'word' : 'sentence'} corresponds to ${hours}:${String(minutes).padStart(2, '0')}`;
         timestampBox.style.backgroundColor = '#333';
     } catch (error) {
         timestampBox.textContent = error.message;
@@ -163,9 +164,20 @@ function convertTimeToSentence() {
     const minutes = hour * 60 + minute;
     const uniqueString = generateUniqueString(minutes);
 
-    timestampBox.textContent = `The sentence for ${hour}:${String(minute).padStart(2, '0')} is "${uniqueString}".`;
+    timestampBox.textContent = `The ${oneWordModeCheckbox.checked ? 'word' : 'sentence'} for ${hour}:${String(minute).padStart(2, '0')} is "${uniqueString}".`;
     timestampBox.style.backgroundColor = '#333';
 }
+
+function toggleMode() {
+    const isOneWordMode = oneWordModeCheckbox.checked;
+    pageTitle.textContent = isOneWordMode ? 'Unique Minute Word Generator' : 'Unique Minute String Generator';
+    sentenceInput.placeholder = isOneWordMode ? 'Enter word' : 'Enter sentence';
+    timeToSentenceButton.textContent = isOneWordMode ? 'Convert Time to Word' : 'Convert Time to Sentence';
+    lookupButton.textContent = isOneWordMode ? 'Lookup Time' : 'Lookup Time';
+    updateStringBox();
+}
+
+oneWordModeCheckbox.addEventListener('change', toggleMode);
 
 useDropdownsCheckbox.addEventListener('change', () => {
     dropdownsSection.style.display = useDropdownsCheckbox.checked ? 'flex' : 'none';
@@ -175,11 +187,13 @@ useDropdownsCheckbox.addEventListener('change', () => {
 generateButton.addEventListener('click', updateStringBox);
 lookupButton.addEventListener('click', lookupTimestamp);
 timeToSentenceButton.addEventListener('click', convertTimeToSentence);
-oneWordModeCheckbox.addEventListener('change', updateStringBox);
 
 // Populate dropdowns on load
 populateDropdowns();
 
+// Initial setup
+toggleMode();
+
 // Update the string and time every minute
-updateStringBox(); // Initial call to display the string on page load
 setInterval(updateStringBox, 60000); // Update every minute
+updateStringBox(); // Initial call to display the string on page load
