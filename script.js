@@ -124,7 +124,7 @@ function getTimestampFromSentence(sentence) {
                     (adjectiveIndex * nouns.length * adverbs.length * verbs.length);
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    return { hours, remainingMinutes };
+    return { hours, minutes: remainingMinutes };
 }
 
 function lookupTimestamp() {
@@ -141,8 +141,8 @@ function lookupTimestamp() {
     }
 
     try {
-        const { hours, remainingMinutes } = getTimestampFromSentence(sentence);
-        timestampBox.textContent = `The sentence corresponds to ${hours}:${String(remainingMinutes).padStart(2, '0')}`;
+        const { hours, minutes } = getTimestampFromSentence(sentence);
+        timestampBox.textContent = `The sentence corresponds to ${hours}:${String(minutes).padStart(2, '0')}`;
         timestampBox.style.backgroundColor = '#333';
     } catch (error) {
         timestampBox.textContent = error.message;
