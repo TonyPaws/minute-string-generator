@@ -4,6 +4,7 @@ This project is a web application that generates a unique, human-readable senten
 
 ## Features
 
+-**One word mode**: Produces a single word based on the time, should be unique for all 1440 possible timestamps.
 - **Unique Sentence Generation**: Generates a unique sentence for each minute of the day using predefined lists of nouns, adverbs, transitive verbs, and adjectives.
 - **Time Lookup**: Allows users to enter a sentence and find the corresponding time.
 - **Dropdown Selection**: Users can opt to select each word from dropdown lists instead of entering a sentence manually.
@@ -53,7 +54,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ## Future enhancements
 - **Localisation**: Strings in different languages, am and pm notation.
-- **Improve single word mode**: There are 1440 timestamps, which is just a bit more than the number of unique words in the first five chapters of Winnie-The Pooh (1379), a children's book. There is no technical limitation that requires us to rely on five words, it was simply the first implementation of the idea.
+- **Improve single word mode**: There are 1440 timestamps, which is just a bit more than the number of unique words in the first five chapters of Winnie-The Pooh (1379), a children's book. They can be vetted out to be more memorable.
 - **N-word mode**: As said before, there are 1440 minutes in a day. The Babylonians left us with a good system : 2^5 × 3^2 × 5 gives 36 factors, which means it can be broken down into word-lists in all manner of ways.
 - **Bijectivity**: Currently, there are strings that can give you hours outside the 24h clock, and invalid strings. This is simply due to initial ease of implementing a hash-map and to test whether my memory is better-suited to word-strings. 
 - **Colo(u)rs**: Currently, the color also updates based on the time, but this is cosmetic for now. It could match with the adjective, providing a layer of redundancy.
