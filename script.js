@@ -27,15 +27,6 @@ const nouns = ["cat", "dog", "car", "tree", "house", "bird", "mouse", "cake", "s
 const adverbs = ["quickly", "slowly", "happily", "sadly", "gracefully", "angrily", "eagerly", "lazily", "boldly", "quietly"];
 const verbs = ["writes", "draws", "paints", "carries", "builds", "repairs", "reads", "sends", "receives", "offers"];
 const adjectives = ["big", "small", "bright", "dark", "shiny", "rough", "smooth", "soft", "hard", "loud"];
-let oneWordList = [];
-
-// Fetch the noun list
-fetch('https://www.desiquintans.com/downloads/nounlist/nounlist.txt')
-    .then(response => response.text())
-    .then(text => {
-        oneWordList = text.split('\n').filter(Boolean);
-        updateStringBox(); // Initial call after loading the word list
-    });
 
 function getWordFromList(list, index) {
     return list[index % list.length];
@@ -106,6 +97,16 @@ function populateDropdowns() {
 }
 
 function getTimestampFromSentence(sentence) {
+    if (oneWordModeCheckbox.checked) {
+        const index = getIndexFromWord(oneWordList, sentence);
+        if (index === -1) {
+            throw new Error("Word not found in list.");
+        }
+        const hours = Math.floor(index / 60);
+        const minutes = index % 60;
+        return { hours, minutes };
+    }
+
     const [noun1, adverb, verb, adjective, noun2] = sentence.split(' ');
     const noun1Index = getIndexFromWord(nouns, noun1);
     const adverbIndex = getIndexFromWord(adverbs, adverb);
@@ -121,7 +122,9 @@ function getTimestampFromSentence(sentence) {
                     (adverbIndex * nouns.length) + 
                     (verbIndex * nouns.length * adverbs.length) + 
                     (adjectiveIndex * nouns.length * adverbs.length * verbs.length);
-    return minutes;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return { hours, remainingMinutes };
 }
 
 function lookupTimestamp() {
@@ -138,9 +141,7 @@ function lookupTimestamp() {
     }
 
     try {
-        const minutes = getTimestampFromSentence(sentence);
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
+        const { hours, remainingMinutes } = getTimestampFromSentence(sentence);
         timestampBox.textContent = `The sentence corresponds to ${hours}:${String(remainingMinutes).padStart(2, '0')}`;
         timestampBox.style.backgroundColor = '#333';
     } catch (error) {
@@ -180,4 +181,5 @@ oneWordModeCheckbox.addEventListener('change', updateStringBox);
 populateDropdowns();
 
 // Update the string and time every minute
+updateStringBox(); // Initial call to display the string on page load
 setInterval(updateStringBox, 60000); // Update every minute
