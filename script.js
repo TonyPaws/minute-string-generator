@@ -34,6 +34,7 @@ fetch('https://www.desiquintans.com/downloads/nounlist/nounlist.txt')
     .then(response => response.text())
     .then(text => {
         oneWordList = text.split('\n').filter(Boolean);
+        updateStringBox(); // Initial call after loading the word list
     });
 
 function getWordFromList(list, index) {
@@ -179,5 +180,4 @@ oneWordModeCheckbox.addEventListener('change', updateStringBox);
 populateDropdowns();
 
 // Update the string and time every minute
-updateStringBox(); // Initial call to display the string on page load
 setInterval(updateStringBox, 60000); // Update every minute
