@@ -6,6 +6,7 @@ const timestampBox = document.getElementById('timestamp-box');
 const timeBox = document.getElementById('time-box');
 const useDropdownsCheckbox = document.getElementById('use-dropdowns');
 const dropdownsSection = document.getElementById('dropdowns-section');
+const oneWordModeCheckbox = document.getElementById('one-word-mode');
 
 const noun1Select = document.getElementById('noun1-select');
 const adverbSelect = document.getElementById('adverb-select');
@@ -26,6 +27,14 @@ const nouns = ["cat", "dog", "car", "tree", "house", "bird", "mouse", "cake", "s
 const adverbs = ["quickly", "slowly", "happily", "sadly", "gracefully", "angrily", "eagerly", "lazily", "boldly", "quietly"];
 const verbs = ["writes", "draws", "paints", "carries", "builds", "repairs", "reads", "sends", "receives", "offers"];
 const adjectives = ["big", "small", "bright", "dark", "shiny", "rough", "smooth", "soft", "hard", "loud"];
+let oneWordList = [];
+
+// Fetch the noun list
+fetch('https://www.desiquintans.com/downloads/nounlist/nounlist.txt')
+    .then(response => response.text())
+    .then(text => {
+        oneWordList = text.split('\n').filter(Boolean);
+    });
 
 function getWordFromList(list, index) {
     return list[index % list.length];
@@ -36,6 +45,10 @@ function getIndexFromWord(list, word) {
 }
 
 function generateUniqueString(minutes) {
+    if (oneWordModeCheckbox.checked) {
+        return getWordFromList(oneWordList, minutes);
+    }
+
     const noun1 = getWordFromList(nouns, minutes);
     const adverb = getWordFromList(adverbs, Math.floor(minutes / nouns.length));
     const verb = getWordFromList(verbs, Math.floor(minutes / (nouns.length * adverbs.length)));
@@ -160,6 +173,7 @@ useDropdownsCheckbox.addEventListener('change', () => {
 generateButton.addEventListener('click', updateStringBox);
 lookupButton.addEventListener('click', lookupTimestamp);
 timeToSentenceButton.addEventListener('click', convertTimeToSentence);
+oneWordModeCheckbox.addEventListener('change', updateStringBox);
 
 // Populate dropdowns on load
 populateDropdowns();
